@@ -23,7 +23,16 @@ cv::Mat hsv_equalized(cv::Mat& src){   // the color format is BGR
     cv::cvtColor(src,temp_src,CV_BGR2HSV);
     cv::split(temp_src,hsvChannel);
     cv::split(temp_src,hsvchannel_temp);
-    cv::equalizeHist(hsvChannel[2],hsvchannel_temp[2]);
+    //cv::equalizeHist(hsvChannel[2],hsvchannel_temp[2]);
+
+    /****test functions for colored image clanhe *****/
+    //int climit = 5;
+
+    cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(10,cv::Size(2,2)); // default is 8 * 8
+    //clahe->setClipLimit(climit);
+    clahe->apply(hsvChannel[2],hsvchannel_temp[2]);
+
+    /*************************************************/
 
     //push the converted and original channels and merge into the original image
     output_hsv.push_back(hsvChannel[0]);
@@ -69,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->button_equal,SIGNAL(clicked()),this,SLOT(on_button_equal_clicked()));
 
     //set path
-    std::string imageName("C:/HIWI/test-hiwi/unequalized.jpg");
+    std::string imageName("C:/HIWI/test-hiwi/bad_2.jpg");
     cv::Mat image;
     image = cv::imread(imageName,-1); //read the image
     //load on check
@@ -105,26 +114,33 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_button_equal_clicked()
 {
-    cv::Mat image = cv::imread(std::string("C:/HIWI/test-hiwi/unequalized.jpg"),-1); //read the image
+    cv::Mat image = cv::imread(std::string("C:/HIWI/test-hiwi/bad_2.jpg"),-1); //read the image
     /*
      * histogram equalization
      */
     //convert to grayscale
     cv::Mat gray_image,equalized_image;
     cv::cvtColor(image,gray_image,cv::COLOR_BGR2GRAY);
-    cv::equalizeHist(gray_image,equalized_image);
-    cv::imwrite(std::string("C:/HIWI/test-hiwi/equalized.jpg"),equalized_image);
+    //cv::equalizeHist(gray_image,equalized_image);
+    /*********************************************************************/
 
+    cv::Ptr<cv::CLAHE> clane = cv::createCLAHE(30,cv::Size(2,2));
+    clane->apply(gray_image,equalized_image);
+
+    /*********************************************************************/
+
+    cv::imwrite(std::string("C:/HIWI/test-hiwi/equalized.jpg"),equalized_image);
     equalized_scene.addPixmap(QPixmap::fromImage(Mat2QImageGrayscale(equalized_image)));
 
     /*
      * colored image equalization
     */
     //historgram equalization for colored image
-    cv::Mat image_color = cv::imread(std::string("C:/HIWI/images/transmission/B.png"),-1); //read the image
+    cv::Mat image_color = cv::imread(std::string("C:/HIWI/images/transmission/equalized_B_final.jpg"),-1); //read the image
 
     //HSV color image histogram equalization
     cv::Mat equalized_image_color = hsv_equalized(image_color);
-    cv::imwrite("C:/HIWI/images/transmission/equalized_B_final.jpg",equalized_image_color);
+    cv::imshow("Clanhe image",equalized_image_color);
+    //cv::imwrite("C:/HIWI/images/transmission/equalized_B_final.jpg",equalized_image_color); !!!!!!!!!!!!!!!!!!!!!! DO NOT USE!!!ONLY ONE TIME
     equ_color.addPixmap(QPixmap::fromImage(Mat2QImage(equalized_image_color)));
 }
