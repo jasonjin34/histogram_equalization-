@@ -32,7 +32,7 @@ cv::Mat hsv_equalized(cv::Mat& src){   // the color format is BGR
 
     cv::merge(output_hsv,output);
     cv::cvtColor(output,output_converted,CV_HSV2BGR);
-    //cv::imshow("histogram equalized color image -- BGR format",output_converted);
+    //cv::imshow("histogram equalized color image -- BGR format",output_converted);  testing result
 
     return output_converted;
 }
@@ -125,6 +125,6 @@ void MainWindow::on_button_equal_clicked()
 
     //HSV color image histogram equalization
     cv::Mat equalized_image_color = hsv_equalized(image_color);
+    cv::imwrite("C:/HIWI/images/transmission/equalized_B_final.jpg",equalized_image_color);
     equ_color.addPixmap(QPixmap::fromImage(Mat2QImage(equalized_image_color)));
-
 }
