@@ -14,33 +14,34 @@
 /*
  * color image histogram qualization functions
 */
-void hsv_equalized(cv::Mat& src){
-    /*
-    cv::Mat src_hsv,output,temp_src;
-    cv::cvtColor(src, src_hsv,CV_BGR2HSV); //first convert to the HSV format
-    //cv::split(src_hsv,)  /// check the image format CV_8U or the other format
-    std::vector<cv::Mat> hsv_planes,hsv_temp;
-    cv::split(src_hsv,hsv_planes);
-    //Saturation equalization
+cv::Mat hsv_equalized(cv::Mat& src){   // the color format is BGR
+    std::vector<cv::Mat> hsvChannel(3), hsvchannel_temp(3),output_hsv;
+    cv::Mat temp_src,output,output_converted;
+    std::vector<cv::Mat> channel; // spearate channel for merage functions
 
-    cv::equalizeHist(hsv_planes[1],hsv_temp[1]);
-    hsv_planes[1] = hsv_temp[1];
-    cv::merge(hsv_planes[0],hsv_planes[1],hsv_planes[2],temp_src);
-    cv::cvtColor(temp_src,output,CV_HSV2RGB);
+    //use temp the get the color transfer image
+    cv::cvtColor(src,temp_src,CV_BGR2HSV);
+    cv::split(temp_src,hsvChannel);
+    cv::split(temp_src,hsvchannel_temp);
+    cv::equalizeHist(hsvChannel[2],hsvchannel_temp[2]);
 
-    return output;
-    */
-    cv::Mat hsvchannel[3], temp,output;
-    temp = cv::Mat::zeros(cv::Size(src.cols,src.rows),CV_8UC1);
-    cv::split(src,hsvchannel);
+    //push the converted and original channels and merge into the original image
+    output_hsv.push_back(hsvChannel[0]);
+    output_hsv.push_back(hsvChannel[1]);
+    output_hsv.push_back(hsvchannel_temp[2]);
 
+    cv::merge(output_hsv,output);
+    cv::cvtColor(output,output_converted,CV_HSV2BGR);
+    //cv::imshow("histogram equalized color image -- BGR format",output_converted);
+
+    return output_converted;
 }
 
 
 QImage Mat2QImage(cv::Mat& src){
     cv::Mat temp;
-    cv::cvtColor(src,temp,CV_BGR2RGB);  //might need it in the future
     temp = src;
+    cv::cvtColor(src,temp,CV_BGR2RGB);  //might need it in the future
     QImage dest(temp.data,temp.cols,temp.rows,static_cast<int>(temp.step),QImage::Format_RGB888);
     dest.bits(); //enforce deep copy of QImage
     return dest;
@@ -48,7 +49,6 @@ QImage Mat2QImage(cv::Mat& src){
 
 QImage Mat2QImageGrayscale(cv::Mat& src){
     cv::Mat temp;
-    cv::cvtColor(src,temp,CV_GRAY2RGB);  //might need it in the future
     temp = src;
     QImage dest(temp.data,temp.cols,temp.rows,static_cast<int>(temp.step),QImage::Format_Grayscale8);
     dest.bits(); //enforce deep copy of QImage
@@ -118,15 +118,13 @@ void MainWindow::on_button_equal_clicked()
     equalized_scene.addPixmap(QPixmap::fromImage(Mat2QImageGrayscale(equalized_image)));
 
     /*
-     * colored image equalization    !!!!!!!!!!! not finished
+     * colored image equalization
     */
     //historgram equalization for colored image
     cv::Mat image_color = cv::imread(std::string("C:/HIWI/images/transmission/B.png"),-1); //read the image
-    cv::Mat gray_image_color,equalized_image_color_gray,equalized_image_color;
-    cv::cvtColor(image_color,gray_image_color,cv::COLOR_RGB2GRAY);
-    cv::equalizeHist(gray_image_color,equalized_image_color_gray);
-    cv::cvtColor(equalized_image_color_gray,equalized_image_color,cv::COLOR_GRAY2BGR);
-    //cv::imshow("equalized color image",equalized_image_color);
+
+    //HSV color image histogram equalization
+    cv::Mat equalized_image_color = hsv_equalized(image_color);
     equ_color.addPixmap(QPixmap::fromImage(Mat2QImage(equalized_image_color)));
 
 }
