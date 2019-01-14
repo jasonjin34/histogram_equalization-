@@ -11,6 +11,7 @@
 #include <QGraphicsView>
 #include <QPushButton>
 #include <iostream>
+#include <vector>
 
 //opencv library
 #include <opencv2/opencv.hpp>

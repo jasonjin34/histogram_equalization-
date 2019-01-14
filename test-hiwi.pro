@@ -37,10 +37,12 @@ LIBS+=-L"C:\HIWI\lib\opencv-3.4.5\x64\vc15\lib" -lopencv_world345
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    histogram.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    histogram.h
 
 FORMS += \
         mainwindow.ui

@@ -2,15 +2,39 @@
 #include "ui_mainwindow.h"
 #include <QCoreApplication>
 
-/*To Do*/
+/*To Do Working plan -- bis Marz */
 /*
  * 1. grayscale histogram equalization   ! 2/3 finished still need to write Mat2QImage functions
- * 2. multiply regions histogram equalization
- * 3. adaptive histogram equalization using CLAHE function in OpenCV
+ * 3. multiply regions histogram equalization
+ * 2. adaptive histogram equalization using CLAHE function in OpenCV
  * 4. 3D color image histogran equalization
- * 5. Backprojection OpenCV (maybe???)2
+ * *extra QT Data visuliazation QT Charts
 */
 
+/*
+ * color image histogram qualization functions
+*/
+void hsv_equalized(cv::Mat& src){
+    /*
+    cv::Mat src_hsv,output,temp_src;
+    cv::cvtColor(src, src_hsv,CV_BGR2HSV); //first convert to the HSV format
+    //cv::split(src_hsv,)  /// check the image format CV_8U or the other format
+    std::vector<cv::Mat> hsv_planes,hsv_temp;
+    cv::split(src_hsv,hsv_planes);
+    //Saturation equalization
+
+    cv::equalizeHist(hsv_planes[1],hsv_temp[1]);
+    hsv_planes[1] = hsv_temp[1];
+    cv::merge(hsv_planes[0],hsv_planes[1],hsv_planes[2],temp_src);
+    cv::cvtColor(temp_src,output,CV_HSV2RGB);
+
+    return output;
+    */
+    cv::Mat hsvchannel[3], temp,output;
+    temp = cv::Mat::zeros(cv::Size(src.cols,src.rows),CV_8UC1);
+    cv::split(src,hsvchannel);
+
+}
 
 
 QImage Mat2QImage(cv::Mat& src){
@@ -89,6 +113,7 @@ void MainWindow::on_button_equal_clicked()
     cv::Mat gray_image,equalized_image;
     cv::cvtColor(image,gray_image,cv::COLOR_BGR2GRAY);
     cv::equalizeHist(gray_image,equalized_image);
+    cv::imwrite(std::string("C:/HIWI/test-hiwi/equalized.jpg"),equalized_image);
 
     equalized_scene.addPixmap(QPixmap::fromImage(Mat2QImageGrayscale(equalized_image)));
 
