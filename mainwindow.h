@@ -22,6 +22,7 @@
 //test class
 #include "histogram.h"
 
+
 namespace Ui {
 class MainWindow;
 }

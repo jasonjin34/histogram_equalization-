@@ -42,7 +42,8 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
-    histogram.h
+    histogram.h \
+    convfunktion.h
 
 FORMS += \
         mainwindow.ui

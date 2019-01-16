@@ -34,8 +34,10 @@ void Histogram::histoEqualiz(){
 
     cv::merge(output_hsv,output);
     cv::cvtColor(output,output_converted,CV_HSV2BGR);
-    cv::imshow("histogram equalized color image -- BGR format",output_converted); // testing result
-
-
+    //cv::imshow("histogram equalized color image -- BGR format",output_converted); // testing result
+    hisEqua_src_color = output_converted;
 }
 
+cv::Mat Histogram::getEqualizedColor(){
+    return this->hisEqua_src_color;
+}

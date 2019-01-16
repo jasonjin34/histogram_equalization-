@@ -16,20 +16,22 @@
 #include <QDebug>
 
 
+
 class Histogram
 {
 public:
     Histogram();
+
     Histogram(std::string);
 
     void histoEqualiz();
 
+    cv::Mat getEqualizedColor();
 private:
     cv::Mat src;
-    QImage hisEqua_src_gray;
-    QImage hisEqua_src_color;
+    cv::Mat hisEqua_src_gray;
+    cv::Mat hisEqua_src_color;
 
 };
-
 
 #endif // HISTOGRAM_H

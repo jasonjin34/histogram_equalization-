@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "convfunktion.h"
 #include <QCoreApplication>
+
 
 /*To Do Working plan -- bis Marz */
 /*
@@ -44,24 +46,6 @@ cv::Mat hsv_equalized(cv::Mat& src){   // the color format is BGR
     //cv::imshow("histogram equalized color image -- BGR format",output_converted);  testing result
 
     return output_converted;
-}
-
-
-QImage Mat2QImage(cv::Mat& src){
-    cv::Mat temp;
-    temp = src;
-    cv::cvtColor(src,temp,CV_BGR2RGB);  //might need it in the future
-    QImage dest(temp.data,temp.cols,temp.rows,static_cast<int>(temp.step),QImage::Format_RGB888);
-    dest.bits(); //enforce deep copy of QImage
-    return dest;
-}
-
-QImage Mat2QImageGrayscale(cv::Mat& src){
-    cv::Mat temp;
-    temp = src;
-    QImage dest(temp.data,temp.cols,temp.rows,static_cast<int>(temp.step),QImage::Format_Grayscale8);
-    dest.bits(); //enforce deep copy of QImage
-    return dest;
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -149,4 +133,6 @@ void MainWindow::on_button_equal_clicked()
     std::string src_string = "C:/HIWI/images/transmission/B.png";
     Histogram test = Histogram(src_string);
     test.histoEqualiz();
+    cv::Mat output_test = test.getEqualizedColor();
+    equ_color.addPixmap((QPixmap::fromImage(Mat2QImage(output_test))));
 }
