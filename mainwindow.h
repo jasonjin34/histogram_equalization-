@@ -19,6 +19,9 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/types_c.h>
 
+//test class
+#include "histogram.h"
+
 namespace Ui {
 class MainWindow;
 }

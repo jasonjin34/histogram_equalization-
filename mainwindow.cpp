@@ -23,14 +23,14 @@ cv::Mat hsv_equalized(cv::Mat& src){   // the color format is BGR
     cv::cvtColor(src,temp_src,CV_BGR2HSV);
     cv::split(temp_src,hsvChannel);
     cv::split(temp_src,hsvchannel_temp);
-    //cv::equalizeHist(hsvChannel[2],hsvchannel_temp[2]);
+    cv::equalizeHist(hsvChannel[2],hsvchannel_temp[2]);
 
     /****test functions for colored image clanhe *****/
     //int climit = 5;
 
-    cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(10,cv::Size(2,2)); // default is 8 * 8
+    //cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(10,cv::Size(2,2)); // default is 8 * 8
     //clahe->setClipLimit(climit);
-    clahe->apply(hsvChannel[2],hsvchannel_temp[2]);
+    //clahe->apply(hsvChannel[2],hsvchannel_temp[2]);
 
     /*************************************************/
 
@@ -136,11 +136,17 @@ void MainWindow::on_button_equal_clicked()
      * colored image equalization
     */
     //historgram equalization for colored image
-    cv::Mat image_color = cv::imread(std::string("C:/HIWI/images/transmission/equalized_B_final.jpg"),-1); //read the image
+    //cv::Mat image_color = cv::imread(std::string("C:/HIWI/images/transmission/B.png"),-1); //read the image
 
     //HSV color image histogram equalization
+    /*
     cv::Mat equalized_image_color = hsv_equalized(image_color);
     cv::imshow("Clanhe image",equalized_image_color);
-    //cv::imwrite("C:/HIWI/images/transmission/equalized_B_final.jpg",equalized_image_color); !!!!!!!!!!!!!!!!!!!!!! DO NOT USE!!!ONLY ONE TIME
+    cv::imwrite("C:/HIWI/images/transmission/equalized_B_final_HSV.jpg",equalized_image_color); // !!!!!!!!!!!!!!!!!!!!!! DO NOT USE!!!ONLY ONE TIME
     equ_color.addPixmap(QPixmap::fromImage(Mat2QImage(equalized_image_color)));
+    */
+    /*********************  class test function *****************************/
+    std::string src_string = "C:/HIWI/images/transmission/B.png";
+    Histogram test = Histogram(src_string);
+    test.histoEqualiz();
 }
