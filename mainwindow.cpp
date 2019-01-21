@@ -78,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
      * function convert Opencv Mat image to a Qt QImage
      * use cvtColor and setPixmap to to QGraphicDisplay
     */
-    scene.addPixmap(QPixmap::fromImage(Mat2QImage(image)));
+    //scene.addPixmap(QPixmap::fromImage(Mat2QImage(image)));
 
  /************************************************************************************************/
     /* Histogram with colored image
@@ -90,7 +90,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     else qDebug() << "load success";
     //convert to QImage and display
-    unequ_color.addPixmap(QPixmap::fromImage(Mat2QImage(image_color)));
+    //unequ_color.addPixmap(QPixmap::fromImage(Mat2QImage(image_color)));
 
 }
 
@@ -144,17 +144,19 @@ void MainWindow::on_button_equal_clicked()
 void MainWindow::on_button_canny_clicked()
 {
     scene.clear();
+    scene.update();
     unequ_color.clear();
+    unequ_color.update();
     equalized_scene.clear();
     equ_color.clear();
 
-    std::string first_image_string = "C:/HIWI/images/transmission/canny_origin.jpg";
+    std::string first_image_string = "C:/HIWI/images/transmission/newyork.jpg";
     cv::Mat first_image = cv::imread(first_image_string,-1);
     scene.addPixmap((QPixmap::fromImage(Mat2QImage(first_image))));
 
     /****************************************************/
     //load image
-    std::string src_string = "C:/HIWI/images/transmission/canny_origin.jpg";
+    std::string src_string = "C:/HIWI/images/transmission/newyork.jpg";
     cv::Mat src = cv::imread(src_string,-1);
     cv::Mat src_grayscale, src_temp, output,output_2; //with other parameter
 

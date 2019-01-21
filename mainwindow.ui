@@ -78,6 +78,11 @@
       <height>340</height>
      </size>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>1</pointsize>
+     </font>
+    </property>
    </widget>
    <widget class="QGraphicsView" name="equalizedView">
     <property name="geometry">
@@ -173,38 +178,7 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="text">
-     <string>After Histogram Equalization</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>40</y>
-      <width>271</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>500</width>
-      <height>20</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <family>Times New Roman</family>
-      <pointsize>13</pointsize>
-      <weight>75</weight>
-      <italic>true</italic>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Before Histogram Equalization</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
