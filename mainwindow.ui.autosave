@@ -78,6 +78,11 @@
       <height>340</height>
      </size>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>1</pointsize>
+     </font>
+    </property>
    </widget>
    <widget class="QGraphicsView" name="equalizedView">
     <property name="geometry">

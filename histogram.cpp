@@ -16,6 +16,18 @@ Histogram::Histogram(std::string src_string)
     } else qDebug() << "load success";
 }
 
+cv::Mat Histogram::getEqualizedGray()
+{
+    return this->hisEqua_src_gray;
+}
+
+void Histogram::histoEqualizGray(){
+   cv::Mat temp_image;
+   cv::cvtColor(src,temp_image,cv::COLOR_BGR2GRAY);
+   cv::Ptr<cv::CLAHE> clane = cv::createCLAHE(30,cv::Size(2,2));
+   clane->apply(temp_image, hisEqua_src_gray);
+}
+
 void Histogram::histoEqualiz(){
     std::vector<cv::Mat> hsvChannel(3),hsvchannel_temp(3),output_hsv;
     cv::Mat temp_src,output,output_converted;

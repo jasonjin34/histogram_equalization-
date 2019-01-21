@@ -24,9 +24,19 @@ public:
 
     Histogram(std::string);
 
+    /**
+     * @brief histoEqualiz get the histogram equalized color image
+     */
     void histoEqualiz();
 
+    /**
+     * @brief histoEqualizGray get the histogram equalized for blackwhite image
+     */
+    void histoEqualizGray();
+
     cv::Mat getEqualizedColor();
+
+    cv::Mat getEqualizedGray();
 private:
     cv::Mat src;
     cv::Mat hisEqua_src_gray;

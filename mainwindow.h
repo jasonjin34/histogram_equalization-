@@ -40,6 +40,8 @@ private slots:
     */
     void on_button_equal_clicked();
 
+    void on_button_canny_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene scene, equalized_scene,unequ_color,equ_color;

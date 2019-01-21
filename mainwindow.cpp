@@ -10,6 +10,9 @@
  * 3. multiply regions histogram equalization
  * 2. adaptive histogram equalization using CLAHE function in OpenCV
  * 4. 3D color image histogran equalization
+ * 5. Canny edge nur edges
+ * 6. Canny edge in Bild
+ *
  * *extra QT Data visuliazation QT Charts
 */
 
@@ -60,9 +63,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /*Equalization button slot connection */
     connect(ui->button_equal,SIGNAL(clicked()),this,SLOT(on_button_equal_clicked()));
+    connect(ui->button_canny,SIGNAL(clicked()),this,SLOT(on_button_canny_clicked()));
 
     //set path
-    std::string imageName("C:/HIWI/test-hiwi/bad_2.jpg");
+    std::string imageName("C:/HIWI/test-hiwi/unequalized.jpg");
     cv::Mat image;
     image = cv::imread(imageName,-1); //read the image
     //load on check
@@ -98,7 +102,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_button_equal_clicked()
 {
-    cv::Mat image = cv::imread(std::string("C:/HIWI/test-hiwi/bad_2.jpg"),-1); //read the image
+    cv::Mat image = cv::imread(std::string("C:/HIWI/test-hiwi/unequalized.jpg"),-1); //read the image
     /*
      * histogram equalization
      */
@@ -113,7 +117,7 @@ void MainWindow::on_button_equal_clicked()
 
     /*********************************************************************/
 
-    cv::imwrite(std::string("C:/HIWI/test-hiwi/equalized.jpg"),equalized_image);
+    //cv::imwrite(std::string("C:/HIWI/test-hiwi/equalized.jpg"),equalized_image);
     equalized_scene.addPixmap(QPixmap::fromImage(Mat2QImageGrayscale(equalized_image)));
 
     /*
@@ -135,4 +139,42 @@ void MainWindow::on_button_equal_clicked()
     test.histoEqualiz();
     cv::Mat output_test = test.getEqualizedColor();
     equ_color.addPixmap((QPixmap::fromImage(Mat2QImage(output_test))));
+}
+
+void MainWindow::on_button_canny_clicked()
+{
+    scene.clear();
+    unequ_color.clear();
+    equalized_scene.clear();
+    equ_color.clear();
+
+    std::string first_image_string = "C:/HIWI/images/transmission/canny_origin.jpg";
+    cv::Mat first_image = cv::imread(first_image_string,-1);
+    scene.addPixmap((QPixmap::fromImage(Mat2QImage(first_image))));
+
+    /****************************************************/
+    //load image
+    std::string src_string = "C:/HIWI/images/transmission/canny_origin.jpg";
+    cv::Mat src = cv::imread(src_string,-1);
+    cv::Mat src_grayscale, src_temp, output,output_2; //with other parameter
+
+    //colorspace transformation and noise cancelling
+    cv::cvtColor(src,src_grayscale,cv::COLOR_BGR2GRAY);
+    cv::blur(src_grayscale,src_grayscale,cv::Size(2,2));
+
+    //canny edge detection
+    int threadhold_min = 100;
+    int threadhold_max = threadhold_min*3;
+    int kernel_size = 3;
+    cv::Canny(src_grayscale,src_temp,threadhold_min,threadhold_max,kernel_size);
+    unequ_color.addPixmap((QPixmap::fromImage(Mat2QImageGrayscale(src_temp))));
+
+    //change color space and add to the origin image
+    cv::cvtColor(src_temp,src_temp,cv::COLOR_GRAY2BGR);
+    cv::addWeighted(src_temp,0.5,src,0.5,0.0,output);
+    equ_color.addPixmap(QPixmap::fromImage(Mat2QImage(output)));
+
+    //addweighted parameter adjustment
+    cv::addWeighted(src_temp,0.3,src,0.7,0.0,output_2);
+    equalized_scene.addPixmap(QPixmap::fromImage(Mat2QImage(output_2)));
 }
